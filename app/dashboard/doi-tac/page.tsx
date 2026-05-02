@@ -8,7 +8,6 @@ import AlertBanner from '@/src/components/ui/AlertBanner'
 type TransactionRow = Database['public']['Tables']['transactions']['Row']
 type CommissionRow  = Database['public']['Tables']['commissions']['Row']
 
-const mockUser = { ho_ten: 'Nguyễn Minh Tuấn', vai_tro: 'doi_tac' }
 
 const trangThaiMap: Record<string, { label: string; variant: 'green' | 'yellow' | 'red' | 'blue' | 'gray' | 'purple' | 'orange' }> = {
   tiem_nang:        { label: 'Tiềm năng',      variant: 'purple' },
@@ -27,6 +26,12 @@ function formatVND(n: number) {
 
 export default async function DoiTacDashboard() {
   const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  const userRes = await supabase
+    .from('users').select('ho_ten, vai_tro').eq('email', user?.email ?? '').single()
+  const userRecord = userRes.data as { ho_ten: string; vai_tro: string } | null
+  const currentUser = { ho_ten: userRecord?.ho_ten ?? 'Người dùng', vai_tro: userRecord?.vai_tro ?? 'doi_tac' }
 
   const [{ data: giaoDich }, { data: hoaHong }] = await Promise.all([
     supabase
@@ -56,12 +61,12 @@ export default async function DoiTacDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Topbar vaiTro={mockUser.vai_tro} hoTen={mockUser.ho_ten} />
+      <Topbar vaiTro={currentUser.vai_tro} hoTen={currentUser.ho_ten} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard Đối Tác</h1>
-          <p className="text-gray-500 text-sm mt-1">Xin chào, {mockUser.ho_ten}! Đây là tổng quan hoạt động của bạn.</p>
+          <p className="text-gray-500 text-sm mt-1">Xin chào, {currentUser.ho_ten}! Đây là tổng quan hoạt động của bạn.</p>
         </div>
 
         {canHanhDong.length > 0 && (

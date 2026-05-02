@@ -7,7 +7,6 @@ import AlertBanner from '@/src/components/ui/AlertBanner'
 
 type PropertyRow = Database['public']['Tables']['properties']['Row']
 
-const mockUser = { ho_ten: 'Trần Văn Khánh', vai_tro: 'chu_so_huu' }
 
 const loaiMap: Record<string, string> = {
   can_ho: 'Căn hộ', nha_pho: 'Nhà phố', dat_nen: 'Đất nền', biet_thu: 'Biệt thự', van_phong: 'Văn phòng',
@@ -30,6 +29,12 @@ function formatVND(n: number) {
 export default async function ChuSoHuuDashboard() {
   const supabase = await createClient()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  const userRes = await supabase
+    .from('users').select('ho_ten, vai_tro').eq('email', user?.email ?? '').single()
+  const userRecord = userRes.data as { ho_ten: string; vai_tro: string } | null
+  const currentUser = { ho_ten: userRecord?.ho_ten ?? 'Người dùng', vai_tro: userRecord?.vai_tro ?? 'chu_so_huu' }
+
   const { data: properties } = await supabase
     .from('properties')
     .select('*')
@@ -46,12 +51,12 @@ export default async function ChuSoHuuDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Topbar vaiTro={mockUser.vai_tro} hoTen={mockUser.ho_ten} />
+      <Topbar vaiTro={currentUser.vai_tro} hoTen={currentUser.ho_ten} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard Chủ Sở Hữu</h1>
-          <p className="text-gray-500 text-sm mt-1">Xin chào, {mockUser.ho_ten}! Tổng quan danh mục bất động sản của bạn.</p>
+          <p className="text-gray-500 text-sm mt-1">Xin chào, {currentUser.ho_ten}! Tổng quan danh mục bất động sản của bạn.</p>
         </div>
 
         {canKy.length > 0 && (

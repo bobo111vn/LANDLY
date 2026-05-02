@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import LogoutButton from './LogoutButton'
 
 const roleLabel: Record<string, string> = {
   doi_tac: 'Đối Tác',
@@ -40,6 +41,7 @@ export default function Topbar({
         <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600">
           {hoTen.charAt(0).toUpperCase()}
         </div>
+        <LogoutButton />
       </div>
     </header>
   )

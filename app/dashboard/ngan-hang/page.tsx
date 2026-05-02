@@ -7,7 +7,6 @@ import AlertBanner from '@/src/components/ui/AlertBanner'
 
 type LoanRow = Database['public']['Tables']['loan_applications']['Row']
 
-const mockUser = { ho_ten: 'Phạm Thị Hương', vai_tro: 'nhan_vien_ngan_hang' }
 
 const trangThaiMap: Record<string, { label: string; variant: 'green' | 'yellow' | 'blue' | 'gray' | 'red' | 'purple' | 'orange' }> = {
   chua_nop:      { label: 'Chưa nộp',     variant: 'gray'   },
@@ -27,6 +26,12 @@ function formatVND(n: number) {
 export default async function NganHangDashboard() {
   const supabase = await createClient()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  const userRes = await supabase
+    .from('users').select('ho_ten, vai_tro').eq('email', user?.email ?? '').single()
+  const userRecord = userRes.data as { ho_ten: string; vai_tro: string } | null
+  const currentUser = { ho_ten: userRecord?.ho_ten ?? 'Người dùng', vai_tro: userRecord?.vai_tro ?? 'nhan_vien_ngan_hang' }
+
   const { data: loans } = await supabase
     .from('loan_applications')
     .select('*')
@@ -41,12 +46,12 @@ export default async function NganHangDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Topbar vaiTro={mockUser.vai_tro} hoTen={mockUser.ho_ten} />
+      <Topbar vaiTro={currentUser.vai_tro} hoTen={currentUser.ho_ten} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard Ngân Hàng</h1>
-          <p className="text-gray-500 text-sm mt-1">Xin chào, {mockUser.ho_ten}! Tổng quan xử lý hồ sơ vay.</p>
+          <p className="text-gray-500 text-sm mt-1">Xin chào, {currentUser.ho_ten}! Tổng quan xử lý hồ sơ vay.</p>
         </div>
 
         {canBoSung.length > 0 && (
