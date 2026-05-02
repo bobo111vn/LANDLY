@@ -1,8 +1,12 @@
 import { createClient } from '@/utils/supabase/server'
+import type { Database } from '@/src/lib/database.types'
 import Topbar from '@/src/components/ui/Topbar'
 import MetricCard from '@/src/components/ui/MetricCard'
 import Badge from '@/src/components/ui/Badge'
 import AlertBanner from '@/src/components/ui/AlertBanner'
+
+type PropertyRow = Database['public']['Tables']['properties']['Row']
+type LoanRow     = Database['public']['Tables']['loan_applications']['Row']
 
 const mockUser = { ho_ten: 'Lê Thị Bình', vai_tro: 'nguoi_mua' }
 
@@ -47,8 +51,8 @@ export default async function NguoiMuaDashboard() {
       .order('ngay_nop', { ascending: false }),
   ])
 
-  const dsTaiSan  = properties ?? []
-  const dsHoSoVay = loans ?? []
+  const dsTaiSan: PropertyRow[]  = properties ?? []
+  const dsHoSoVay: LoanRow[]     = loans ?? []
 
   const hoSoChoXuLy = dsHoSoVay.filter(h => h.trang_thai === 'cho_phe_duyet' || h.trang_thai === 'dang_xu_ly')
 

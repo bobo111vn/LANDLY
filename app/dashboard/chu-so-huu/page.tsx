@@ -1,8 +1,11 @@
 import { createClient } from '@/utils/supabase/server'
+import type { Database } from '@/src/lib/database.types'
 import Topbar from '@/src/components/ui/Topbar'
 import MetricCard from '@/src/components/ui/MetricCard'
 import Badge from '@/src/components/ui/Badge'
 import AlertBanner from '@/src/components/ui/AlertBanner'
+
+type PropertyRow = Database['public']['Tables']['properties']['Row']
 
 const mockUser = { ho_ten: 'Trần Văn Khánh', vai_tro: 'chu_so_huu' }
 
@@ -32,7 +35,7 @@ export default async function ChuSoHuuDashboard() {
     .select('*')
     .order('ngay_cap_nhat', { ascending: false })
 
-  const dsTaiSan = properties ?? []
+  const dsTaiSan: PropertyRow[] = properties ?? []
 
   const dangBan    = dsTaiSan.filter(t => t.trang_thai === 'cho_ban').length
   const tongGiaTri = dsTaiSan.filter(t => t.trang_thai !== 'da_ban').reduce((s, t) => s + t.gia, 0)

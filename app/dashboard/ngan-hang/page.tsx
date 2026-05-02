@@ -1,8 +1,11 @@
 import { createClient } from '@/utils/supabase/server'
+import type { Database } from '@/src/lib/database.types'
 import Topbar from '@/src/components/ui/Topbar'
 import MetricCard from '@/src/components/ui/MetricCard'
 import Badge from '@/src/components/ui/Badge'
 import AlertBanner from '@/src/components/ui/AlertBanner'
+
+type LoanRow = Database['public']['Tables']['loan_applications']['Row']
 
 const mockUser = { ho_ten: 'Phạm Thị Hương', vai_tro: 'nhan_vien_ngan_hang' }
 
@@ -29,7 +32,7 @@ export default async function NganHangDashboard() {
     .select('*')
     .order('ngay_cap_nhat', { ascending: false })
 
-  const dsHoSo = loans ?? []
+  const dsHoSo: LoanRow[] = loans ?? []
 
   const dangXuLy  = dsHoSo.filter(h => h.trang_thai === 'dang_xu_ly' || h.trang_thai === 'cho_phe_duyet').length
   const daDuyet   = dsHoSo.filter(h => h.trang_thai === 'da_duyet' || h.trang_thai === 'da_giai_ngan').length

@@ -1,8 +1,12 @@
 import { createClient } from '@/utils/supabase/server'
+import type { Database } from '@/src/lib/database.types'
 import Topbar from '@/src/components/ui/Topbar'
 import MetricCard from '@/src/components/ui/MetricCard'
 import Badge from '@/src/components/ui/Badge'
 import AlertBanner from '@/src/components/ui/AlertBanner'
+
+type TransactionRow = Database['public']['Tables']['transactions']['Row']
+type CommissionRow  = Database['public']['Tables']['commissions']['Row']
 
 const mockUser = { ho_ten: 'Nguyễn Minh Tuấn', vai_tro: 'doi_tac' }
 
@@ -36,8 +40,8 @@ export default async function DoiTacDashboard() {
       .order('ngay_tao', { ascending: false }),
   ])
 
-  const transactions = giaoDich ?? []
-  const commissions  = hoaHong  ?? []
+  const transactions: TransactionRow[] = giaoDich ?? []
+  const commissions: CommissionRow[]   = hoaHong  ?? []
 
   const dangXuLy       = transactions.filter(g => g.trang_thai !== 'hoan_thanh' && g.trang_thai !== 'huy_bo').length
   const hoaHongChoNhan = commissions.filter(h => !h.da_thanh_toan).reduce((s, h) => s + h.so_tien, 0)
