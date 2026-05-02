@@ -60,3 +60,27 @@
 - Tailwind CSS v4
 - Supabase (Auth + PostgreSQL)
 - Netlify (deploy)
+
+## 👥 PHÂN CÔNG NHIỆM VỤ
+
+### 🔴 LẬP TRÌNH VIÊN
+Kết nối data Supabase vào dashboard, fix bug, deploy Netlify. KHÔNG thiết kế lại UI.
+
+### 🔵 DATABASE
+Schema, query, migration, seed data. KHÔNG đụng code Next.js.
+
+### 🟡 UI / GIAO DIỆN
+Code React components với mock data. KHÔNG kết nối database trực tiếp.
+
+### 🟢 NGHIỆP VỤ & LOGIC
+Định nghĩa quy trình, tính hoa hồng. KHÔNG viết code.
+
+## 📋 CÁCH BẮT ĐẦU CONVERSATION MỚI
+Paste vào đầu: "Đọc PROJECT_STATUS tại: https://github.com/bobo111vn/LANDLY/blob/main/PROJECT_STATUS.md. Nhiệm vụ hôm nay: [mô tả]"
+
+## ⚠️ TUYỆT ĐỐI KHÔNG LÀM
+- KHÔNG xóa bảng/cột database
+- KHÔNG dùng NextAuth
+- KHÔNG dùng src/app/
+- KHÔNG deploy lên Vercel
+- KHÔNG paste token vào chat
