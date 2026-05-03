@@ -84,3 +84,15 @@ Paste vào đầu: "Đọc PROJECT_STATUS tại: https://github.com/bobo111vn/LA
 - KHÔNG dùng src/app/
 - KHÔNG deploy lên Vercel
 - KHÔNG paste token vào chat
+
+### 03/05/2026
+- Setup RLS (Row Level Security) cho 7 bảng
+- Mỗi user chỉ thấy data của mình theo vai_tro
+- Admin trangnguyencc1ce@gmail.com có full access
+- Tên cột thực tế database (tiếng Việt):
+  - properties: chu_so_huu_id, ten, dia_chi, tinh_thanh
+  - transactions: tai_san_id, nguoi_ban_id, nguoi_mua_id, doi_tac_id
+  - loan_applications: giao_dich_id, khach_hang_id, nhan_vien_id
+  - commissions: giao_dich_id, doi_tac_id, so_tien
+  - transaction_logs: giao_dich_id, nguoi_thuc_hien_id
+  - property_images: tai_san_id, url
